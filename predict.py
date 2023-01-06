@@ -13,84 +13,69 @@ def parse_input(file: str) -> pd.DataFrame:
         # Read from standard input
         file = sys.stdin
 
-    # df = pd.read_csv(file)
-    df = pd.read_excel(file)
+    df = pd.read_csv(file)
     return df
 
 
 def write_output(data: pd.DataFrame, out_file: str):
     if out_file == '-':
         # Use standard output
-        out_file = sys.stdout
+        out_file = sys.stdout.buffer
 
-    data.to_csv(out_file, index=False)
+    data.to_csv(out_file, index=False, mode='wb')
 
 
 def get_input_features(data: pd.DataFrame) -> pd.DataFrame:
     necessary_features = {'wavelength', 'fractal_dimension', 'fraction_of_coating'}
     optional_features = {'number_of_primary_particles', 'vol_equi_radius_outer', 'vol_equi_radius_inner',
                          'equi_mobility_dia'}
-    # TODO: Jaikrishna
-
+    all_features = necessary_features.union(optional_features)
+    all_features_list = ['wavelength', 'fractal_dimension', 'fraction_of_coating', 'primary_particle_size',
+                         'number_of_primary_particles', 'vol_equi_radius_outer', 'vol_equi_radius_inner',
+                         'equi_mobility_dia']
 
     # Check if all input features given
-    all_present = True
-    for feature in necessary_features.union(optional_features):
-        if feature not in data.columns:
-            all_present = False
-            break
-    if all_present:
-        return data[['wavelength', 'fractal_dimension', 'fraction_of_coating', 'primary_particle_size',
-                 'number_of_primary_particles', 'vol_equi_radius_outer', 'vol_equi_radius_inner', 'equi_mobility_dia']]
+    if all_features.issubset(data.columns):
+        return data[all_features_list]
 
-    # Check if necessary feeatures given atleast
-    for nes_feature in necessary_features:
-        if nes_feature not in data.columns:
-            raise RuntimeError(f"Please specify mandatory feature values for {nes_feature}")
+    # Check if necessary features are present
+    if not necessary_features.issubset(data.columns):
+        raise RuntimeError(f"Please specify mandatory feature values for {necessary_features}!")
+    if data[necessary_features].isna().any(axis=None):
+        raise RuntimeError(f"Please make sure to specify values for {necessary_features} in every row!")
+    if len(optional_features.intersection(data.columns)) == 0:
+        raise RuntimeError(f"Please make sure to specify at least one of {optional_features} in every row!")
+
+    # Define some constants for conversions
+    # TODO: Our code assumes that a pure BC primary particle has a fixed radius of 15 nm. We should probably relax
+    #       this assumption and make this feature mandatory
+    inner_pp_size = 15
+    mob_dia_exp = 0.51
+    mob_dia_factor = 10 ** (-2 * mob_dia_exp + 0.92)
 
     # Check if number of primary particles present in input
+    if "primary_particle_size" not in data.columns:
+        data['primary_particle_size'] = inner_pp_size / (1 - data['fraction_of_coating'] * 0.01) ** (1 / 3)
 
-    if "number_primary_particles" in data.columns:
+    # Compute missing features
+    if 'number_of_primary_particles' not in data.columns:
+        if 'equi_mobility_dia' in data.columns:
+            data['number_of_primary_particles'] = (data['equi_mobility_dia'] /
+                                                   (2 * mob_dia_factor * data['primary_particle_size'])) ** (1 / mob_dia_exp)
+        else:
+            if 'vol_equi_radius_outer' not in data.columns:
+                data['vol_equi_radius_outer'] = data['vol_equi_radius_inner'] / \
+                                                (1 - data['fraction_of_coating'] * 0.01) ** (1 / 3)
+            data['number_of_primary_particles'] = (data['vol_equi_radius_outer'] / data['primary_particle_size']) ** 3
 
-        if "primary_particle_size" not in data.columns:
-            data['primary_particle_size'] = (15/1-(data['fraction_of_coating']/100))**(1/3)
-        if "equi_mobility_diameter" not in data.columns:
-            data['equi_mobility_dia'] = 2*(0.7943*data['primary_particle_size'])*(data['number_of_primary_particles']**0.51)
+    if "equi_mobility_dia" not in data.columns:
+        data['equi_mobility_dia'] = 2 * mob_dia_factor * data['primary_particle_size'] * data['number_of_primary_particles'] ** mob_dia_exp
+    if "vol_equi_radius_outer" not in data.columns:
+        data['vol_equi_radius_outer'] = data['number_of_primary_particles'] ** (1 / 3) * data['primary_particle_size']
+    if "vol_equi_radius_inner" not in data.columns:
+        data['vol_equi_radius_inner'] = (1 - data['fraction_of_coating'] * 0.01) ** (1 / 3) * data['vol_equi_radius_outer']
 
-        if "vol_equi_radius_outer" not in data.columns:
-            data['vol_equi_radius_outer'] = (data['number_of_primary_particles'] * data['primary_particle_size'] ** 3) ** (1 / 3)
-            print(data)
-        if "vol_equi_radius_inner" not in data.columns:
-            data['vol_equi_radius_inner'] = ((1-(data['fraction_of_coating']/100))**(1/3)) * data['vol_equi_radius_outer']
-
-
-    elif "equi_mobility_dia" in data.columns:
-        if "primary_particle_size" not in data.columns:
-            data['primary_particle_size'] = 15/(1-(data['fraction_of_coating']/100))**(1/3)
-        if "number_of_primary_particles" not in data.columns:
-            data['number_of_primary_particles'] = (data['equi_mobility_dia']/(2*(0.7943*data['primary_particle_size'])))**(1/0.51)
-        if "vol_equi_radius_outer" not in data.columns:
-            data['vol_equi_radius_outer'] = (data['number_of_primary_particles'] * data['primary_particle_size'] ** 3) ** (1 / 3)
-        if "vol_equi_radius_inner" not in data.columns:
-            data['vol_equi_radius_inner'] = ((1-(data['fraction_of_coating']/100))**(1/3)) * data['vol_equi_radius_outer']
-    elif "vol_equi_radius_outer" in data.columns:
-        if "primary_particle_size" not in data.columns:
-            data['primary_particle_size'] = (15 / 1 - (data['fraction_of_coating']/100)) ** (1 / 3)
-        if "number_primary_particles" not in data.columns:
-            data['number_of_primary_particles'] = (data['vol_equi_radius_outer']/data['primary_particle_size'])**3
-        if "vol_equi_radius_outer" not in data.columns:
-            data['vol_equi_radius_outer'] = (data['number_of_primary_particles'] * data[
-                'primary_particle_size'] ** 3) ** (1 / 3)
-        if "vol_equi_radius_inner" not in data.columns:
-            data['vol_equi_radius_inner'] = ((1 - (data['fraction_of_coating']/100)) ** (1 / 3)) * data[
-                'vol_equi_radius_outer']
-
-
-
-
-
-    return data[['wavelength', 'fractal_dimension', 'fraction_of_coating', 'primary_particle_size',
-                 'number_of_primary_particles', 'vol_equi_radius_outer', 'vol_equi_radius_inner', 'equi_mobility_dia']]
+    return data[all_features_list]
 
 
 def predict_krr(model_file: str, inputs: pd.DataFrame) -> pd.DataFrame:
@@ -173,7 +158,7 @@ def main(args: argparse.Namespace):
 
     # Add refractive indices
     ref_ind = pd.read_csv(args.refractive_indices, index_col='wavelength')
-    data_out = data_out.join(ref_ind, how='inner', on='wavelength')
+    data_out = data_out.join(ref_ind, how='left', on='wavelength')
 
     data_out['volume_total'] = 4 / 3 * math.pi * data_out['vol_equi_radius_outer'] ** 3
     data_out['volume_bc'] = 4 / 3 * math.pi * data_out['vol_equi_radius_inner'] ** 3
