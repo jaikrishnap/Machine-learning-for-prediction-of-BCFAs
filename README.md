@@ -37,7 +37,7 @@ tobias@tobias-Laptop:~$ cd prediction_script
 tobias@tobias-Laptop:~/prediction_script$ conda activate BCA
 (BCA) tobias@tobias-Laptop:~/prediction_script$ 
 ```
-If you do not have git installed on your machine, you can also download this repository as a zip file by clicking [here](archive/refs/heads/main.zip).
+If you do not have git installed on your machine, you can also download this repository as a zip file by clicking [here](https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs/archive/refs/heads/main.zip).
 
 The basic command to execute the script is
 ```commandline
