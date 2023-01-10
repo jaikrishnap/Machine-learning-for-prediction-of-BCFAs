@@ -35,6 +35,7 @@ def get_input_features(data: pd.DataFrame) -> pd.DataFrame:
                          'equi_mobility_dia']
 
     # Check if all input features given
+    # TODO: Right now, the code cannot handle missing features in some rows
     if all_features.issubset(data.columns):
         return data[all_features_list]
 
@@ -170,8 +171,8 @@ def main(args: argparse.Namespace):
     data_out['mass_bc'] = data_out['volume_bc'] * data_out['density_bc'] * 1e-21
     data_out['mass_organics'] = data_out['volume_organics'] * data_out['density_organics'] * 1e-21
     data_out['mass_total'] = data_out['mass_bc'] + data_out['mass_organics']
-    data_out['mr_total_bc'] = data_out['mass_total'] / data_out['mass_bc']
-    data_out['mr_nonbc_bc'] = data_out['mass_organics'] / data_out['mass_bc']
+    data_out['mr_total/bc'] = data_out['mass_total'] / data_out['mass_bc']
+    data_out['mr_nonBC/BC'] = data_out['mass_organics'] / data_out['mass_bc']
 
     data_out['q_ext'] = data_out['q_abs'] + data_out['q_sca']
     data_out['c_geo'] = math.pi * data_out['vol_equi_radius_outer'] ** 2
@@ -185,11 +186,11 @@ def main(args: argparse.Namespace):
 
     # Reindex dataset to make sure columns are in the intended order
     data_out = data_out[['wavelength', 'fractal_dimension', 'fraction_of_coating', 'primary_particle_size',
-                         'number_of_primary_particles', 'vol_equi_radius_inner', 'vol_equi_radius_outer',
+                         'number_of_primary_particles', 'vol_equi_radius_outer', 'vol_equi_radius_inner',
                          'equi_mobility_dia', 'mie_epsilon', 'length_scale_factor', 'm_real_bc', 'm_im_bc',
                          'm_real_organics', 'm_im_organics', 'volume_total', 'volume_bc', 'volume_organics',
-                         'density_bc', 'density_organics', 'mass_total', 'mass_organics', 'mass_bc', 'mr_total_bc',
-                         'mr_nonbc_bc', 'q_ext', 'q_abs', 'q_sca', 'g', 'c_geo', 'c_ext', 'c_abs', 'c_sca', 'ssa',
+                         'density_bc', 'density_organics', 'mass_total', 'mass_organics', 'mass_bc', 'mr_total/bc',
+                         'mr_nonBC/BC', 'q_ext', 'q_abs', 'q_sca', 'g', 'c_geo', 'c_ext', 'c_abs', 'c_sca', 'ssa',
                          'mac_total', 'mac_bc', 'mac_organics']]
 
     write_output(data_out, args.out_file)
