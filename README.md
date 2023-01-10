@@ -23,20 +23,36 @@ Running the prediction script requires a working Python interpreter with several
 TODO: add instructions for virtualenv + pip
 
 ## Running the script
-To run the script, open a terminal window in the folder that contains `predict.py` and activate the virtual environment that you set up earlier:
+To run the script, open a terminal window, clone this repository, and activate the virtual environment that you set up earlier:
 ```commandline
-tobias@tobias-Laptop:prediction_script$ conda activate BCA
-(BCA) tobias@tobias-Laptop:prediction_script$ 
+tobias@tobias-Laptop:~$ git clone https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs.git prediction_script
+Cloning into 'prediction_script'...
+remote: Enumerating objects: 50, done.
+remote: Counting objects: 100% (11/11), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 50 (delta 3), reused 7 (delta 1), pack-reused 39
+Receiving objects: 100% (50/50), 43.13 MiB | 9.20 MiB/s, done.
+Resolving deltas: 100% (11/11), done.
+tobias@tobias-Laptop:~$ cd prediction_script
+tobias@tobias-Laptop:~/prediction_script$ conda activate BCA
+(BCA) tobias@tobias-Laptop:~/prediction_script$ 
 ```
+If you do not have git installed on your machine, you can also download this repository as a zip file by clicking [here](archive/refs/heads/main.zip).
+
 The basic command to execute the script is
 ```commandline
-(BCA) tobias@tobias-Laptop:prediction_script$ python predict.py [OPTIONS] -o out.csv in.csv
+(BCA) tobias@tobias-Laptop:~/prediction_script$ python predict.py [OPTIONS] -o out.csv in.csv
 ```
 This would read input data from the file `in.csv` and save prediction results in the file `out.csv`. Please check the subsequent sections for more information on how to format your input files.
 `[OPTIONS]` refers to the options explained in the [options section](#options). You can also run `python predict.py --help` to display a short summary.  
 For example, the following command would use the neural network model instead of kernel ridge regression to predict the optical properties:
 ```commandline
 python predict.py -m ann -o out_ann.csv in.csv
+```
+
+Note that the script supports writing output to STDOUT and reading input from STDIN by specifying `-` instead of a file name, so the following command would be equivalent to the previous one:
+```commandline
+python predict.py -m ann -o - - < in.csv > out.csv
 ```
 
 ### Input format
