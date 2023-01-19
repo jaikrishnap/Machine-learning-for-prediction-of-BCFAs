@@ -59,7 +59,8 @@ python predict.py -m ann -o - - < in.csv > out.csv
 Input files need to be in CSV format. The following columns are required:
 * `fraction_of_coating`: The fraction (in percent) of the total volume that is made up by the organic coating. Should be a real number between 0 and 99.
 * `fractal_dimension`: The fractal dimension describing the morphology of the fractal aggregate.
-* `wavelength`: The wavelength (in nm) for which to compute optical properties
+* `wavelength`: The wavelength (in nm) for which to compute optical properties.
+
 Additionally, at least one of the following columns is required to specify the size of the aggregate:
 * `number_of_primary_particles`: The number of primary particles that make up the aggregate.
 * `equi_mobility_dia`: The mobility diameter of the fractal aggregate.
