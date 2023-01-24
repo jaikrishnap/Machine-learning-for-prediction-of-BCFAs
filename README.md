@@ -1,5 +1,9 @@
-# Optical properties of black carbon (BC) at various stages of aging: comprehensive dataset and machine learning-based prediction algorithm
-TODO: write some introductory paragraph and maybe change title
+# Machine learning models for predicting optical properties of black carbon fractal aggregates
+This repository contains pre-trained machine learning models to predict optical properties of black carbon fractal aggregates as described in
+
+**Optical properties of black carbon (BC) at various stages of aging: comprehensive dataset and machine learning-based prediction algorithm**  
+Jaikrishna Patil, Baseerat Romshoo, Tobias Michels, Thomas Müller, Marius Kloft, and Mira Pöhlker  
+(TODO: title might change, add link to paper)
 
 ## Installing required software
 Running the prediction script requires a working Python interpreter with several packages installed. We recommend using [conda](https://conda.io/projects/conda/en/latest/index.html) to setup a virtual environment:
@@ -20,7 +24,6 @@ Running the prediction script requires a working Python interpreter with several
    >>> quit()
    (BCA) tobias@tobias-Laptop:~$
    ```
-TODO: add instructions for virtualenv + pip
 
 ## Running the script
 To run the script, open a terminal window, clone this repository, and activate the virtual environment that you set up earlier:
@@ -71,7 +74,7 @@ Any order of the columns will work. At the moment, our script cannot handle miss
 
 ### Output format
 The script will always output a CSV file that contains the unchanged columns from the input file plus the model's predictions and some derived values. Note that the columns in the output file will be the same and in the same order regardless of the input.
-Please check `samples/output.csv` for the exact specification and our corresponding publication [^1] for information about the features.
+Please check `samples/output.csv` for the exact specification and our corresponding research paper for information about the features.
 
 ### Options
 * `-o`, `--out-file`: This options specifies the file into which the output is written. Specifying `-` will cause the script to write the results to STDOUT.
@@ -79,13 +82,16 @@ Please check `samples/output.csv` for the exact specification and our correspond
 * `--model-file`: Specifies the file to load the model from. This defaults to the model files in the `models` folder. Please see the section on [training your own models](#training-your-own-models) for information on the model files' format.
 * `-r`, `--refractive-indices`: The output file contains refractive indices for black carbon and organic coating for certain wavelengths. They are read from the file you specify here or by default from `data/refractive_indices.csv`. Please check this file for the required format. If refractive indices for a certain input wavelength are not present in this file, the corrsponding columns will be empty in the output file.
 
-[^1]: Patil et al., .... TODO
-
 ## Training your own models
-TODO: section on how to train models.
+In case you want to train your own models to use them with the prediction script, please note that you need to save them in a specific format:
+* The kernel ridge regression prediction attempts to load a single file that should be a pickle dump containing a dictionary with keys `shift`
+, `transform`, and `regressor`, where `shift` should be a non-negative floating point number, `transform` a scikit-learn transformer and `regressor` a scikit-learn estimator, e.g., an instance of `sklearn.kernel_ridge.KernelRidge`.
+* The neural network predition on the other hand attempts to load a `hdf5` file containing a keras ModelCheckpoint. Furthermore, it loads a file of the same name but with a `.pkl` extension that should contain a dict with keys `shift` and `transform` and values as explained above for kernel ridge regression.
+
+The files `train_KRR.py` and `train_ANN.py` contain the minimal code necessary to train and save the kernel ridge regression and neural network models, respectively. You can use them as a starting point for your own training code.
 
 ## Citation
 If you use this code as part of your own work, please consider citing our corresponding research paper:
 ```
-TODO: add bibtex and/or plaintext 
+TODO: add bibtex and/or plaintext citation
 ```
