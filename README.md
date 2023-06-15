@@ -1,7 +1,7 @@
 # Machine learning models for predicting optical properties of black carbon fractal aggregates
-This repository contains pre-trained machine learning models to predict optical properties of black carbon fractal aggregates as described in
+This repository contains pre-trained machine-learning models to predict the optical properties of black carbon fractal aggregates as described in
 
-**Optical properties of black carbon (BC) at various stages of aging: comprehensive dataset and machine learning-based prediction algorithm**  
+**Machine-learning-based approach to predict optical properties of black carbon (BC) at various stages of aging**  
 Jaikrishna Patil, Baseerat Romshoo, Tobias Michels, Thomas Müller, Marius Kloft, and Mira Pöhlker  
 (TODO: title might change, add link to paper)
 
