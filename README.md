@@ -7,7 +7,7 @@ Jaikrishna Patil, Baseerat Romshoo, Tobias Michels, Thomas Müller, Marius Kloft
 ## Installing required software
 Running the prediction script requires a working Python interpreter with several packages installed. We recommend using [conda](https://conda.io/projects/conda/en/latest/index.html) to setup a virtual environment:
 1. Follow the instructions at the [conda website](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) to download and install Miniconda (or Anaconda if you prefer) for your OS.
-2. Open a terminal window clone this repository to your local hard drive:
+2. Open a terminal window and clone this repository to your local hard drive:
    ```commandline
    tobias@tobias-Laptop:~$ git clone https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs.git prediction_script
    Cloning into 'prediction_script'...
