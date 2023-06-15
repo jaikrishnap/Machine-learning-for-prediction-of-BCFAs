@@ -1,4 +1,4 @@
-# achine-learning-based approach to predict optical properties of black carbon (BC) at various stages of aging
+# Machine-learning-based approach to predict optical properties of black carbon (BC) at various stages of aging
 This repository contains pre-trained machine-learning models to predict the optical properties of black carbon fractal aggregates as described in
 
 **Machine-learning-based approach to predict optical properties of black carbon (BC) at various stages of aging**  
