@@ -2,45 +2,48 @@
 This repository contains pre-trained machine-learning models to predict the optical properties of black carbon fractal aggregates as described in
 
 **Machine-learning-based approach to predict optical properties of black carbon (BC) at various aging stages**  
-Jaikrishna Patil, Baseerat Romshoo, Tobias Michels, Thomas Müller, Marius Kloft, and Mira Pöhlker  
-(TODO: title might change, add link to paper)
+Jaikrishna Patil, Baseerat Romshoo, Tobias Michels, Thomas Müller, Marius Kloft, and Mira Pöhlker
 
 ## Installing required software
 Running the prediction script requires a working Python interpreter with several packages installed. We recommend using [conda](https://conda.io/projects/conda/en/latest/index.html) to setup a virtual environment:
 1. Follow the instructions at the [conda website](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) to download and install Miniconda (or Anaconda if you prefer) for your OS.
-2. Open a terminal window in the folder that contains this README and type the following to create a new virtual environment containing the required packages to run the prediction script:
+2. Open a terminal window clone this repository to your local hard drive:
    ```commandline
-   conda env create -f conda_env.yml
+   tobias@tobias-Laptop:~$ git clone https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs.git prediction_script
+   Cloning into 'prediction_script'...
+   remote: Enumerating objects: 50, done.
+   remote: Counting objects: 100% (11/11), done.
+   remote: Compressing objects: 100% (10/10), done.
+   remote: Total 50 (delta 3), reused 7 (delta 1), pack-reused 39
+   Receiving objects: 100% (50/50), 43.13 MiB | 9.20 MiB/s, done.
+   Resolving deltas: 100% (11/11), done.
+   tobias@tobias-Laptop:~$ 
+   ```
+   If you do not have git installed on your machine, you can also download this repository as a zip file by clicking [here](https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs/archive/refs/heads/main.zip).
+2. Navigate to the folder that contains this README and type the following to create a new virtual environment containing the required packages to run the prediction script:
+   ```commandline
+   tobias@tobias-Laptop:~$ cd prediction_script
+   tobias@tobias-Laptop:~/prediction_script$ conda env create -f conda_env.yml
    ```
    If you want to use your NVIDIA GPU to accelerate predictions using the Neural Network, please replace `conda_env.yml` with `conda_env_gpu.yml` in the above command.
 3. To check whether the installation was successful, try running the following commands:
    ```commandline
-   tobias@tobias-Laptop:~$ conda activate BCA
-   (BCA) tobias@tobias-Laptop:~$ python
+   tobias@tobias-Laptop:~/prediction_script$ conda activate BCA
+   (BCA) tobias@tobias-Laptop:~/prediction_script$ python
    Python 3.9.5 (default, Jun  4 2021, 12:28:51) 
    [GCC 7.5.0] :: Anaconda, Inc. on linux
    Type "help", "copyright", "credits" or "license" for more information.
    >>> import keras
    >>> quit()
-   (BCA) tobias@tobias-Laptop:~$
+   (BCA) tobias@tobias-Laptop:~/prediction_script$
    ```
 
 ## Running the script
-To run the script, open a terminal window, clone this repository, and activate the virtual environment that you set up earlier:
+To run the script, open a terminal window and activate the virtual environment that you set up earlier:
 ```commandline
-tobias@tobias-Laptop:~$ git clone https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs.git prediction_script
-Cloning into 'prediction_script'...
-remote: Enumerating objects: 50, done.
-remote: Counting objects: 100% (11/11), done.
-remote: Compressing objects: 100% (10/10), done.
-remote: Total 50 (delta 3), reused 7 (delta 1), pack-reused 39
-Receiving objects: 100% (50/50), 43.13 MiB | 9.20 MiB/s, done.
-Resolving deltas: 100% (11/11), done.
-tobias@tobias-Laptop:~$ cd prediction_script
 tobias@tobias-Laptop:~/prediction_script$ conda activate BCA
 (BCA) tobias@tobias-Laptop:~/prediction_script$ 
 ```
-If you do not have git installed on your machine, you can also download this repository as a zip file by clicking [here](https://github.com/jaikrishnap/Machine-learning-for-prediction-of-BCFAs/archive/refs/heads/main.zip).
 
 The basic command to execute the script is
 ```commandline
