@@ -8,3 +8,4 @@ dependencies:
   - scikit-learn=1.0.1
   - tensorflow=2.6.0
   - keras=2.6.0
+  - numpy<1.24.0
