@@ -96,5 +96,5 @@ The files `train_KRR.py` and `train_ANN.py` contain the minimal code necessary t
 ## Citation
 If you use this code as part of your own work, please consider citing our corresponding research paper:
 ```
-TODO: add bibtex and/or plaintext citation
+Romshoo, B., Patil, J., Michels, T., Müller, T., Kloft, M., and Pöhlker, M.: Improving the predictions of black carbon (BC) optical properties at various aging stages using a machine-learning-based approach, Atmos. Chem. Phys., 24, 8821–8846, https://doi.org/10.5194/acp-24-8821-2024, 2024.
 ```
