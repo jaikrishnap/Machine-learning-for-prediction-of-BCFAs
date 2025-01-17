@@ -94,7 +94,7 @@ In case you want to train your own models to use them with the prediction script
 The files `train_KRR.py` and `train_ANN.py` contain the minimal code necessary to train and save the kernel ridge regression and neural network models, respectively. You can use them as a starting point for your own training code.
 
 ## Citation
-If you use this code as part of your own work, please consider citing our corresponding research paper:
+If you use this code as part of your work, please cite our corresponding research paper:
 ```
 Romshoo, B., Patil, J., Michels, T., Müller, T., Kloft, M., and Pöhlker, M.: Improving the predictions of black carbon (BC) optical properties at various aging stages using a machine-learning-based approach, Atmos. Chem. Phys., 24, 8821–8846, https://doi.org/10.5194/acp-24-8821-2024, 2024.
 ```
